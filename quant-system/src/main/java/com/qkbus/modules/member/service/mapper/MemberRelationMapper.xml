@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qkbus.modules.member.service.mapper.MemberRelationMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.qkbus.modules.member.domain.MemberRelation">
+        <id column="id" property="id"/>
+        <result column="member_id" property="memberId"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="generation" property="generation"/>
+        <result column="gmt_create" property="gmtCreate"/>
+    </resultMap>
+
+
+    <select id="getRelationMaxByParentIds" resultType="com.qkbus.modules.member.domain.MemberRelation">
+        <if test="set != null">
+            SELECT
+            max(generation) generation ,parent_id
+            FROM
+            member_relation WHERE parent_id IN
+            <foreach collection="set" index="index" open="(" separator="," close=")" item="setObj">
+                #{setObj}
+            </foreach>
+        </if>
+        group by parent_id
+
+    </select>
+
+
+</mapper>
